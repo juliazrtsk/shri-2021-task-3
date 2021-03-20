@@ -167,3 +167,44 @@ const DEFAULT_STATE: State = {
 ```
 #bfbfbf88 -> #BFBFBF88
 ```
+
+## 8
+```bash
+frame.ts:25 Uncaught TypeError: Cannot read property 'dataset' of null
+at HTMLBodyElement.<anonymous>
+```
+
+Ошибка возникала при клике на пустую область слайда.
+
+Проблема была в обработчике события click у фрейма (`onDocumentClick`).
+Если клик был совершён по какому-нибудь элементу внутри `<div data-...="..." >`, то в переменной target оказывался элемент DOM-дерева без data-атрибутов.
+Тогда с помощью цикла происходит поиск родителя, у которого эти атрибуты есть.
+
+Суть ошибки: не был обработан случай, когда родитель с data-атрибутами не найден.
+При клике по свободному месту слайда поиск родителя был таким:
+```
+<div class="slide"> ->
+    <body> ->
+        <html> ->
+            null
+```
+Когда получаем null, не можем получить его parentElement. Отсюда ошибка в консоли.
+
+Добавила в условие цикла проверку на то, что мы добрались до `<div>` с классом `slide`.
+```js
+!target.classList.contains('slide')
+```
+
+После этой правки заметила, что если в target находится элемент без data-атрибутов, то во фрейм передаётся следующий message:
+```js
+{
+  type: 'message@ACTION',
+  action: undefined,
+  params: undefined
+}
+```
+
+Перед отправкой сообщения добавила проверку на то, что data-атрибут `action` существует
+```js
+action && sendMessage(messageAction(action, params));
+```
