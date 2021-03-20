@@ -38,7 +38,7 @@ body {
 }
 
 .slide-progress-value {
-    height: 4;
+    height: 4px;
     background-color: #F4B000;
     transition: transform 0.1s linear;
     transform-origin: left top;
@@ -69,7 +69,7 @@ body {
     transform: rotate(180deg);
 }
 
-@media (max-height: 750px) { 
+@media (max-height: 750px) {
     .prev {
         display: none;
     }
