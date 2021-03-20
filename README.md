@@ -208,3 +208,16 @@ at HTMLBodyElement.<anonymous>
 ```js
 action && sendMessage(messageAction(action, params));
 ```
+
+## 9
+Начальное состояние всех прогресс-баров -- "выполненное" (они жёлтые).
+
+Заполнение прогресс бара реализовано через изменение свойства `transform: scaleX(...)`.
+Это происходит в атрибуте `style`, а значит в index.css можно задать классу `slide-progress-value` начальное значение и это не приведёт к ошибке
+(у стилей, объявленных в элементе, наивысшая специфичность).
+```css
+.slide-progress-value {
+  ...
+  transform: scaleX(0);
+}
+```
