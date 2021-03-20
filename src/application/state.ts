@@ -6,7 +6,7 @@ import { data } from './data';
 import { Slide, State } from './types';
 
 const DEFAULT_STATE: State = {
-    theme: 'light',
+    theme: 'dark',
     index: 0,
     progress: 0,
     pause: false,
@@ -22,7 +22,7 @@ export function createState(stories: Slide[]): [(a: Action) => void, Observable<
     createEffects(actions$, state$).subscribe(actions$);
 
     actions$.pipe(
-        withLatestFrom(state$), 
+        withLatestFrom(state$),
         map(([a, s]) => data(s, a)),
     ).subscribe(state$);
 

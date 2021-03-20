@@ -146,3 +146,24 @@ elem.classList.add(`theme_${theme}`);
   }
 }
 ```
+
+## 7
+Дефолтная тема была светлой. В требованиях сказано, что она должна быть тёмной.
+
+Исправила дефолтный класс в `index.html` и `frame.html`
+```html
+<body class="theme_dark">
+```
+
+А также в `DEFAULT_STATE` приложения
+```js
+const DEFAULT_STATE: State = {
+  theme: 'dark',
+  ...
+};
+```
+
+Здесь же немного поправила цвет прогресс бара в светлой теме (чтобы не выбивался из code style).
+```
+#bfbfbf88 -> #BFBFBF88
+```
