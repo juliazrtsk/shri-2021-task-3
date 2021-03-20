@@ -24,3 +24,69 @@ ERROR in /Users/zrtsk/dev/yandex/shri-2021/shri-2021-task-3/src/application/data
 Однако, это значение требовалось в функции data (`src/application/data.ts`).
 
 Исправила, добавив строку `| ReturnType<typeof actionUpdate>` в тип Action.
+
+## 2
+```bash
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value. Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
+
+WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets:
+  index.e64746b1.js (252 KiB)
+
+WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (257 KiB)
+      index.css
+      index.e64746b1.js
+
+WARNING in webpack performance recommendations:
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+```
+
+Подобные ворнинги появлялись в консоли сборке проекта (`npm start` или `npm run build`).
+Вебпак ругался на неоптимизированную сборку, а именно — большие размеры файлов.
+Причины:
+1. Для Webpack не указан mode: 'none', 'development' или 'production' ([link](https://webpack.js.org/configuration/mode/)).
+   Автоматически в mode выставлялось значение 'production', об этом первый ворнинг.
+2. Ворнинги насчёт размера файлов появлялись из-за сочетания mode: 'production' и содержания в файлах inline-source-map.
+
+Можно разделить один конфиг Webpack на два (webpack.development.config.js и webpack.production.config.js).
+Я решила сохранить общий конфиг и добавить env-переменную.
+
+Изменила npm скрипты:
+```json
+{
+  "build": "webpack --env production",
+  "start": "webpack serve --open --env development"
+}
+```
+В конфиге Webpack сделала настройку mode и devtool в зависимости от прокинутой переменной.
+Теперь в prod-версию не помещается source map
+```js
+module.exports = (env) => {
+  const dev = env.development;
+  return {
+    mode: dev ? 'development' : 'production',
+    devtool: dev ? 'inline-source-map' : false,
+    ...
+  }
+}
+```
+
+И дополнительно: заметила, что в prod-сборку css файлы помещались с сохранённым форматированием. Это тоже отражается на размере файлов.
+Поэтому добавила минификацию с помощью плагина `css-minimizer-webpack-plugin`.
+```js
+optimization: {
+    minimize: prod,
+    minimizer: [
+      `...`,
+      new CssMinimizerPlugin(),
+    ],
+  }
+```
+
+## 3
