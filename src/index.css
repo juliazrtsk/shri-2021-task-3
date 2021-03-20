@@ -70,7 +70,7 @@ body {
 }
 
 @media (max-height: 750px) {
-    .prev {
+    .button {
         display: none;
     }
 }
