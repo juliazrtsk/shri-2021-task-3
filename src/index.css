@@ -38,10 +38,11 @@ body {
 }
 
 .slide-progress-value {
-    height: 4;
+    height: 4px;
     background-color: #F4B000;
     transition: transform 0.1s linear;
     transform-origin: left top;
+    transform: scaleX(0);
 }
 
 .frame {
@@ -69,8 +70,8 @@ body {
     transform: rotate(180deg);
 }
 
-@media (max-height: 750px) { 
-    .prev {
+@media (max-height: 750px) {
+    .button {
         display: none;
     }
 }
@@ -84,7 +85,7 @@ body {
 }
 
 .theme_light .slide-progress {
-    background: #bfbfbf88;
+    background: #BFBFBF88;
 }
 
 .theme_light .set-light {

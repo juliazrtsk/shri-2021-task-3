@@ -27,12 +27,16 @@ function receiveMessage({ data }: MessageEvent<XMessage>) {
 function onDocumentClick(e: MouseEvent) {
     if (e.target instanceof HTMLElement) {
         let target = e.target;
-        while(target && !target.dataset.action) {
+        while (
+            target &&
+            !target.dataset.action &&
+            !target.classList.contains('slide')
+        ) {
             target = target.parentElement;
         }
 
-            const { action, params } = target.dataset;
-            sendMessage(messageAction(action, params));
+        const { action, params } = target.dataset;
+        action && sendMessage(messageAction(action, params));
     }
 }
 

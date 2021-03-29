@@ -1,5 +1,5 @@
-import { EMPTY, Observable } from 'rxjs';
-import { distinctUntilChanged, map, mergeMapTo } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import { DELAY, Slide, State } from './types';
 
 interface SlideData<T> {
@@ -9,13 +9,12 @@ interface SlideData<T> {
 
 export const createProgressSelector = (state$: Observable<State>) => state$.pipe(
     map(({ index, progress }): SlideData<number> => ({ index, value: progress / DELAY })),
-    distinctUntilChanged(),    
+    distinctUntilChanged(),
 );
 
 export const createCurrentIndexSelector = (state$: Observable<State>) => state$.pipe(
     map(s => s.index),
     distinctUntilChanged(),
-    mergeMapTo(EMPTY),
 );
 
 export const createThemeSelector = (state$: Observable<State>) => state$.pipe(

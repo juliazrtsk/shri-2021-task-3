@@ -14,10 +14,11 @@ export const actionTimer = () => ({ type: 'timer' } as const);
 
 export const actionMessage = (action: string, params: string) => ({ type: 'message', action, params } as const);
 
-export type Action = 
-    | ReturnType<typeof actionNext> 
-    | ReturnType<typeof actionPrev> 
-    | ReturnType<typeof actionRestart> 
-    | ReturnType<typeof actionMessage> 
-    | ReturnType<typeof actionSetTheme> 
-    | ReturnType<typeof actionTimer>;
+export type Action =
+    | ReturnType<typeof actionNext>
+    | ReturnType<typeof actionPrev>
+    | ReturnType<typeof actionRestart>
+    | ReturnType<typeof actionMessage>
+    | ReturnType<typeof actionSetTheme>
+    | ReturnType<typeof actionTimer>
+    | ReturnType<typeof actionUpdate>;
